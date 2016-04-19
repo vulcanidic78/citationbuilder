@@ -2,9 +2,9 @@
 	//Include the functions file
 	include ('includes/functions.php');
 	
-	$style = $_POST['styleholder'];
-	$source = $_POST['sourceholder'];
-	$medium = $_POST['mediumholder'];
+	$style = filter_input(INPUT_POST,'styleholder');
+	$source = filter_input(INPUT_POST,'sourceholder');
+	$medium = filter_input(INPUT_POST,'mediumholder');
 	
 	//Creates a citation
 	citationcontainstart($style);
@@ -12,12 +12,12 @@
 				case "book":
 					//Clean and load the variables from the form
 					$contributors = array();
-					$addidvalue = cleanvars($_POST['addidvalue']);
+					$addidvalue = filter_input(INPUT_POST,'addidvalue');
 					for ($i = 0; $i < $addidvalue; $i++) {
-						$cselect = cleanvars($_POST['contributorselect'.$i]);
-						$fname = cleanvars($_POST['contributorfname'.$i]);
-						$mi = cleanvars($_POST['contributormi'.$i]);
-						$lname = cleanvars($_POST['contributorlname'.$i]);
+						$cselect = filter_input(INPUT_POST,'contributorselect'.$i);
+						$fname = filter_input(INPUT_POST,'contributorfname'.$i);
+						$mi = filter_input(INPUT_POST,'contributormi'.$i);
+						$lname = filter_input(INPUT_POST,'contributorlname'.$i);
 						
 						$addcontributor = array();
 						if ($lname) {
@@ -28,31 +28,134 @@
 							$contributors[] = $addcontributor;
 						}
 					}
-					$publicationyearinput = cleanvars($_POST['publicationyearinput']);
-					$booktitleinput = cleanvars($_POST['booktitleinput']);
-					$publisherlocationinput = cleanvars($_POST['publisherlocationinput']);
-					$publisherinput = cleanvars($_POST['publisherinput']);
+					$publicationyearinput = filter_input(INPUT_POST,'publicationyearinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$booktitleinput = filter_input(INPUT_POST,'booktitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$publisherlocationinput = filter_input(INPUT_POST,'publisherlocationinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$publisherinput = filter_input(INPUT_POST,'publisherinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 					if ($medium=="website") {
-						$websitetitleinput = cleanvars($_POST['websitetitleinput']);
-						$webaccessdateday = cleanvars($_POST['webaccessdateday']);
-						$webaccessdatemonth = cleanvars($_POST['webaccessdatemonth']);
-						$webaccessdateyear = cleanvars($_POST['webaccessdateyear']);
-						$urlwebsiteinput = cleanvars($_POST['urlwebsiteinput']);
-						$doiwebsiteinput = cleanvars($_POST['doiwebsiteinput']);
+						$websitetitleinput = filter_input(INPUT_POST,'websitetitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateday = filter_input(INPUT_POST,'webaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdatemonth = filter_input(INPUT_POST,'webaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateyear = filter_input(INPUT_POST,'webaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urlwebsiteinput = filter_input(INPUT_POST,'urlwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$doiwebsiteinput = filter_input(INPUT_POST,'doiwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+                                                if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $doidbinput = NULL;
+                                                }
+                                                if (!isset($yearpublishedinput)) {
+                                                    $yearpublishedinput = NULL;
+                                                }
+                                                if (!isset($mediuminput)) {
+                                                    $mediuminput = NULL;
+                                                }
+                                                if (!isset($urlebookinput)) {
+                                                    $urlebookinput = NULL;
+                                                }
+                                                if (!isset($doiebookinput)) {
+                                                    $doiebookinput = NULL;
+                                                }
 					}
 					if ($medium=="db") {
-						$databaseinput = cleanvars($_POST['databaseinput']);
-						$dbaccessdateday = cleanvars($_POST['dbaccessdateday']);
-						$dbaccessdatemonth = cleanvars($_POST['dbaccessdatemonth']);
-						$dbaccessdateyear = cleanvars($_POST['dbaccessdateyear']);
-						$urldbinput = cleanvars($_POST['urldbinput']);
-						$doidbinput = cleanvars($_POST['doidbinput']);
+						$databaseinput = filter_input(INPUT_POST,'databaseinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateday = filter_input(INPUT_POST,'dbaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdatemonth = filter_input(INPUT_POST,'dbaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateyear = filter_input(INPUT_POST,'dbaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urldbinput = filter_input(INPUT_POST,'urldbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$doidbinput = filter_input(INPUT_POST,'doidbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($websitetitleinput)) {
+                                                    $websitetitleinput = NULL;
+                                                }
+                                                if (!isset($webaccessdateday)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($webaccessdatemonth)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($webaccessdateyear)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urlwebsiteinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
+                                                if (!isset($doiwebsiteinput)) {
+                                                    $doiwebsiteinput = NULL;
+                                                }
+                                                if (!isset($yearpublishedinput)) {
+                                                    $yearpublishedinput = NULL;
+                                                }
+                                                if (!isset($mediuminput)) {
+                                                    $mediuminput = NULL;
+                                                }
+                                                if (!isset($urlebookinput)) {
+                                                    $urlebookinput = NULL;
+                                                }
+                                                if (!isset($doiebookinput)) {
+                                                    $doiebookinput = NULL;
+                                                }
 					}
 					if ($medium=="ebook") {
-						$yearpublishedinput = cleanvars($_POST['yearpublishedinput']);
-						$mediuminput = cleanvars($_POST['mediuminput']);
-						$urlebookinput = cleanvars($_POST['urlebookinput']);
-						$doiebookinput = cleanvars($_POST['doiebookinput']);
+						$yearpublishedinput = filter_input(INPUT_POST,'yearpublishedinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$mediuminput = filter_input(INPUT_POST,'mediuminput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urlebookinput = filter_input(INPUT_POST,'urlebookinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$doiebookinput = filter_input(INPUT_POST,'doiebookinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($websitetitleinput)) {
+                                                    $websitetitleinput = NULL;
+                                                }
+                                                if (!isset($webaccessdateday)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($webaccessdatemonth)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($webaccessdateyear)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urlwebsiteinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
+                                                if (!isset($doiwebsiteinput)) {
+                                                    $doiwebsiteinput = NULL;
+                                                }
+                                                if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $doidbinput = NULL;
+                                                }
+                                                    
 					}
 					
 					//Execute the citation
@@ -67,12 +170,12 @@
 				case "bookchapter":
 					//Clean and load the variables from the form
 					$contributors = array();
-					$addidvalue = cleanvars($_POST['addidvalue']);
+					$addidvalue = filter_input(INPUT_POST,'addidvalue');
 					for ($i = 0; $i < $addidvalue; $i++) {
-						$cselect = cleanvars($_POST['contributorselect'.$i]);
-						$fname = cleanvars($_POST['contributorfname'.$i]);
-						$mi = cleanvars($_POST['contributormi'.$i]);
-						$lname = cleanvars($_POST['contributorlname'.$i]);
+						$cselect = filter_input(INPUT_POST,'contributorselect'.$i);
+						$fname = filter_input(INPUT_POST,'contributorfname'.$i);
+						$mi = filter_input(INPUT_POST,'contributormi'.$i);
+						$lname = filter_input(INPUT_POST,'contributorlname'.$i);
 						
 						$addcontributor = array();
 						if ($lname) {
@@ -83,32 +186,84 @@
 							$contributors[] = $addcontributor;
 						}
 					}
-					$publicationyearinput = cleanvars($_POST['publicationyearinput']);
-					$chapteressayinput = cleanvars($_POST['chapteressayinput']);
-					$booktitleinput = cleanvars($_POST['booktitleinput']);
-					$pagesstartinput = cleanvars($_POST['pagesstartinput']);
-					$pagesendinput = cleanvars($_POST['pagesendinput']);
-					$pagesnonconsecutiveinput = cleanvars($_POST['pagesnonconsecutiveinput']);
+					$publicationyearinput = filter_input(INPUT_POST,'publicationyearinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$chapteressayinput = filter_input(INPUT_POST,'chapteressayinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$booktitleinput = filter_input(INPUT_POST,'booktitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$pagesstartinput = filter_input(INPUT_POST,'pagesstartinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$pagesendinput = filter_input(INPUT_POST,'pagesendinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$pagesnonconsecutiveinput = filter_input(INPUT_POST,'pagesnonconsecutiveinput',FILTER_VALIDATE_BOOLEAN) ?: NULL;
 					if ($pagesnonconsecutiveinput) {
-						$pagesnonconsecutivepagenumsinput = cleanvars($_POST['pagesnonconsecutivepagenumsinput']);
+						$pagesnonconsecutivepagenumsinput = filter_input(INPUT_POST,'pagesnonconsecutivepagenumsinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 					}
-					$publisherlocationinput = cleanvars($_POST['publisherlocationinput']);
-					$publisherinput = cleanvars($_POST['publisherinput']);
+					$publisherlocationinput = filter_input(INPUT_POST,'publisherlocationinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$publisherinput = filter_input(INPUT_POST,'publisherinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 					if ($medium=="website") {
-						$websitetitleinput = cleanvars($_POST['websitetitleinput']);
-						$webaccessdateday = cleanvars($_POST['webaccessdateday']);
-						$webaccessdatemonth = cleanvars($_POST['webaccessdatemonth']);
-						$webaccessdateyear = cleanvars($_POST['webaccessdateyear']);
-						$urlwebsiteinput = cleanvars($_POST['urlwebsiteinput']);
-						$doiwebsiteinput = cleanvars($_POST['doiwebsiteinput']);
+						$websitetitleinput = filter_input(INPUT_POST,'websitetitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateday = filter_input(INPUT_POST,'webaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdatemonth = filter_input(INPUT_POST,'webaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateyear = filter_input(INPUT_POST,'webaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urlwebsiteinput = filter_input(INPUT_POST,'urlwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$doiwebsiteinput = filter_input(INPUT_POST,'doiwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $doidbinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
 					}
 					if ($medium=="db") {
-						$databaseinput = cleanvars($_POST['databaseinput']);
-						$dbaccessdateday = cleanvars($_POST['dbaccessdateday']);
-						$dbaccessdatemonth = cleanvars($_POST['dbaccessdatemonth']);
-						$dbaccessdateyear = cleanvars($_POST['dbaccessdateyear']);
-						$urldbinput = cleanvars($_POST['urldbinput']);
-						$doidbinput = cleanvars($_POST['doidbinput']);
+						$databaseinput = filter_input(INPUT_POST,'databaseinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateday = filter_input(INPUT_POST,'dbaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdatemonth = filter_input(INPUT_POST,'dbaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateyear = filter_input(INPUT_POST,'dbaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urldbinput = filter_input(INPUT_POST,'urldbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                $doidbinput = filter_input(INPUT_POST,'doidbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($doidbinput)) {
+                                                    $websitetitleinput = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $doiwebsiteinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
 					}
 					
 					//Execute the citation
@@ -123,12 +278,12 @@
 				case "magazine":
 					//Clean and load the variables from the form
 					$contributors = array();
-					$addidvalue = cleanvars($_POST['addidvalue']);
+					$addidvalue = filter_input(INPUT_POST,'addidvalue');
 					for ($i = 0; $i < $addidvalue; $i++) {
-						$cselect = cleanvars($_POST['contributorselect'.$i]);
-						$fname = cleanvars($_POST['contributorfname'.$i]);
-						$mi = cleanvars($_POST['contributormi'.$i]);
-						$lname = cleanvars($_POST['contributorlname'.$i]);
+						$cselect = filter_input(INPUT_POST,'contributorselect'.$i);
+						$fname = filter_input(INPUT_POST,'contributorfname'.$i);
+						$mi = filter_input(INPUT_POST,'contributormi'.$i);
+						$lname = filter_input(INPUT_POST,'contributorlname'.$i);
 						
 						$addcontributor = array();
 						if ($lname) {
@@ -139,50 +294,230 @@
 							$contributors[] = $addcontributor;
 						}
 					}
-					$articletitleinput = cleanvars($_POST['articletitleinput']);
-					$magazinetitleinput = cleanvars($_POST['magazinetitleinput']);
-					$datepublishedday = cleanvars($_POST['datepublishedday']);
-					$datepublishedmonth = cleanvars($_POST['datepublishedmonth']);
-					$datepublishedyear = cleanvars($_POST['datepublishedyear']);
+					$articletitleinput = filter_input(INPUT_POST,'articletitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$magazinetitleinput = filter_input(INPUT_POST,'magazinetitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$datepublishedday = filter_input(INPUT_POST,'datepublishedday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$datepublishedmonth = filter_input(INPUT_POST,'datepublishedmonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$datepublishedyear = filter_input(INPUT_POST,'datepublishedyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 					if ($medium=="print") {
-						$pagesstartinput = cleanvars($_POST['pagesstartinput']);
-						$pagesendinput = cleanvars($_POST['pagesendinput']);
-						$pagesnonconsecutiveinput = cleanvars($_POST['pagesnonconsecutiveinput']);
+						$pagesstartinput = filter_input(INPUT_POST,'pagesstartinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$pagesendinput = filter_input(INPUT_POST,'pagesendinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$pagesnonconsecutiveinput = filter_input(INPUT_POST,'pagesnonconsecutiveinput',FILTER_VALIDATE_BOOLEAN) ?: NULL;
 						if ($pagesnonconsecutiveinput) {
-							$pagesnonconsecutivepagenumsinput = cleanvars($_POST['pagesnonconsecutivepagenumsinput']);
+							$pagesnonconsecutivepagenumsinput = filter_input(INPUT_POST,'pagesnonconsecutivepagenumsinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 						}
-						$printadvancedinfovolume = cleanvars($_POST['printadvancedinfovolume']);
-						$printadvancedinfoissue = cleanvars($_POST['printadvancedinfoissue']);
+						$printadvancedinfovolume = filter_input(INPUT_POST,'printadvancedinfovolume',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$printadvancedinfoissue = filter_input(INPUT_POST,'printadvancedinfoissue',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($websitetitleinput)) {
+                                                    $websitetitleinput = NULL;
+                                                }
+                                                if (!isset($websiteadvancedinfovolume)) {
+                                                    $websiteadvancedinfovolume = NULL;
+                                                }
+                                                if (!isset($websiteadvancedinfoissue)) {
+                                                    $websiteadvancedinfoissue = NULL;
+                                                }
+                                                if (!isset($webpagesstartinput)) {
+                                                    $webpagesstartinput = NULL;
+                                                }
+                                                if (!isset($webpagesendinput)) {
+                                                    $webpagesendinput = NULL;
+                                                }
+                                                if (!isset($webpagesnonconsecutiveinput)) {
+                                                    $webpagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($webpagesnonconsecutivepagenumsinput)) {
+                                                    $webpagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($webaccessdateday)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($webaccessdatemonth)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($webaccessdateyear)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urlwebsiteinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
+                                                if (!isset($dbpagesstartinput)) {
+                                                    $dbpagesstartinput = NULL;
+                                                }
+                                                if (!isset($dbpagesendinput)) {
+                                                    $dbpagesendinput = NULL;
+                                                }
+                                                if (!isset($dbpagesnonconsecutiveinput)) {
+                                                    $dbpagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($dbpagesnonconsecutivepagenumsinput)) {
+                                                    $dbpagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($dbadvancedinfovolume)) {
+                                                    $dbadvancedinfovolume = NULL;
+                                                }
+                                                if (!isset($dbadvancedinfoissue)) {
+                                                    $dbadvancedinfoissue = NULL;
+                                                }
+                                                if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
 					}
 					if ($medium=="website") {
-						$websitetitleinput = cleanvars($_POST['websitetitleinput']);
-						$websiteadvancedinfovolume = cleanvars($_POST['websiteadvancedinfovolume']);
-						$websiteadvancedinfoissue = cleanvars($_POST['websiteadvancedinfoissue']);
-						$webpagesstartinput = cleanvars($_POST['webpagesstartinput']);
-						$webpagesendinput = cleanvars($_POST['webpagesendinput']);
-						$webpagesnonconsecutiveinput = cleanvars($_POST['webpagesnonconsecutiveinput']);
+						$websitetitleinput = filter_input(INPUT_POST,'websitetitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$websiteadvancedinfovolume = filter_input(INPUT_POST,'websiteadvancedinfovolume',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$websiteadvancedinfoissue = filter_input(INPUT_POST,'websiteadvancedinfoissue',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webpagesstartinput = filter_input(INPUT_POST,'webpagesstartinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webpagesendinput = filter_input(INPUT_POST,'webpagesendinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webpagesnonconsecutiveinput = filter_input(INPUT_POST,'webpagesnonconsecutiveinput',FILTER_VALIDATE_BOOLEAN) ?: NULL;
 						if ($webpagesnonconsecutiveinput) {
-							$webpagesnonconsecutivepagenumsinput = cleanvars($_POST['webpagesnonconsecutivepagenumsinput']);
+							$webpagesnonconsecutivepagenumsinput = filter_input(INPUT_POST,'webpagesnonconsecutivepagenumsinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 						}
-						$webaccessdateday = cleanvars($_POST['webaccessdateday']);
-						$webaccessdatemonth = cleanvars($_POST['webaccessdatemonth']);
-						$webaccessdateyear = cleanvars($_POST['webaccessdateyear']);
-						$urlwebsiteinput = cleanvars($_POST['urlwebsiteinput']);
+						$webaccessdateday = filter_input(INPUT_POST,'webaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdatemonth = filter_input(INPUT_POST,'webaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateyear = filter_input(INPUT_POST,'webaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urlwebsiteinput = filter_input(INPUT_POST,'urlwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($pagesstartinput)) {
+                                                    $pagesstartinput = NULL;
+                                                }
+                                                if (!isset($pagesendinput)) {
+                                                    $pagesendinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($printadvancedinfovolume)) {
+                                                    $printadvancedinfovolume = NULL;
+                                                }
+                                                if (!isset($printadvancedinfoissue)) {
+                                                    $printadvancedinfoissue = NULL;
+                                                }
+                                                if (!isset($dbpagesstartinput)) {
+                                                    $dbpagesstartinput = NULL;
+                                                }
+                                                if (!isset($dbpagesendinput)) {
+                                                    $dbpagesendinput = NULL;
+                                                }
+                                                if (!isset($dbpagesnonconsecutiveinput)) {
+                                                    $dbpagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($dbpagesnonconsecutivepagenumsinput)) {
+                                                    $dbpagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($dbadvancedinfovolume)) {
+                                                    $dbadvancedinfovolume = NULL;
+                                                }
+                                                if (!isset($dbadvancedinfoissue)) {
+                                                    $dbadvancedinfoissue = NULL;
+                                                }
+                                                if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
+                                                if (!isset($webpagesnonconsecutiveinput)) {
+                                                    $webpagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($webpagesnonconsecutivepagenumsinput)) {
+                                                    $webpagesnonconsecutivepagenumsinput = NULL;
+                                                }
 					}
 					if ($medium=="db") {
-						$dbpagesstartinput = cleanvars($_POST['dbpagesstartinput']);
-						$dbpagesendinput = cleanvars($_POST['dbpagesendinput']);
-						$dbpagesnonconsecutiveinput = cleanvars($_POST['dbpagesnonconsecutiveinput']);
+						$dbpagesstartinput = filter_input(INPUT_POST,'dbpagesstartinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbpagesendinput = filter_input(INPUT_POST,'dbpagesendinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbpagesnonconsecutiveinput = filter_input(INPUT_POST,'dbpagesnonconsecutiveinput',FILTER_VALIDATE_BOOLEAN) ?: NULL;
 						if ($dbpagesnonconsecutiveinput) {
-							$dbpagesnonconsecutivepagenumsinput = cleanvars($_POST['dbpagesnonconsecutivepagenumsinput']);
+							$dbpagesnonconsecutivepagenumsinput = filter_input(INPUT_POST,'dbpagesnonconsecutivepagenumsinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 						}
-						$dbadvancedinfovolume = cleanvars($_POST['dbadvancedinfovolume']);
-						$dbadvancedinfoissue = cleanvars($_POST['dbadvancedinfoissue']);
-						$databaseinput = cleanvars($_POST['databaseinput']);
-						$dbaccessdateday = cleanvars($_POST['dbaccessdateday']);
-						$dbaccessdatemonth = cleanvars($_POST['dbaccessdatemonth']);
-						$dbaccessdateyear = cleanvars($_POST['dbaccessdateyear']);
-						$urldbinput = cleanvars($_POST['urldbinput']);
+						$dbadvancedinfovolume = filter_input(INPUT_POST,'dbadvancedinfovolume',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbadvancedinfoissue = filter_input(INPUT_POST,'dbadvancedinfoissue',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$databaseinput = filter_input(INPUT_POST,'databaseinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateday = filter_input(INPUT_POST,'dbaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdatemonth = filter_input(INPUT_POST,'dbaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateyear = filter_input(INPUT_POST,'dbaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urldbinput = filter_input(INPUT_POST,'urldbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($pagesstartinput)) {
+                                                    $pagesstartinput = NULL;
+                                                }
+                                                if (!isset($pagesendinput)) {
+                                                    $pagesendinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($printadvancedinfovolume)) {
+                                                    $printadvancedinfovolume = NULL;
+                                                }
+                                                if (!isset($printadvancedinfoissue)) {
+                                                    $printadvancedinfoissue = NULL;
+                                                }
+                                                if (!isset($websitetitleinput)) {
+                                                    $websitetitleinput = NULL;
+                                                }
+                                                if (!isset($websiteadvancedinfovolume)) {
+                                                    $websiteadvancedinfovolume = NULL;
+                                                }
+                                                if (!isset($websiteadvancedinfoissue)) {
+                                                    $websiteadvancedinfoissue = NULL;
+                                                }
+                                                if (!isset($webpagesstartinput)) {
+                                                    $webpagesstartinput = NULL;
+                                                }
+                                                if (!isset($webpagesendinput)) {
+                                                    $webpagesendinput = NULL;
+                                                }
+                                                if (!isset($webpagesnonconsecutiveinput)) {
+                                                    $webpagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($webpagesnonconsecutivepagenumsinput)) {
+                                                    $webpagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($webaccessdateday)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($webaccessdatemonth)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($webaccessdateyear)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urlwebsiteinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
 					}
 					
 					//Execute the citation
@@ -197,12 +532,12 @@
 				case "newspaper":
 					//Clean and load the variables from the form
 					$contributors = array();
-					$addidvalue = cleanvars($_POST['addidvalue']);
+					$addidvalue = filter_input(INPUT_POST,'addidvalue');
 					for ($i = 0; $i < $addidvalue; $i++) {
-						$cselect = cleanvars($_POST['contributorselect'.$i]);
-						$fname = cleanvars($_POST['contributorfname'.$i]);
-						$mi = cleanvars($_POST['contributormi'.$i]);
-						$lname = cleanvars($_POST['contributorlname'.$i]);
+						$cselect = filter_input(INPUT_POST,'contributorselect'.$i);
+						$fname = filter_input(INPUT_POST,'contributorfname'.$i);
+						$mi = filter_input(INPUT_POST,'contributormi'.$i);
+						$lname = filter_input(INPUT_POST,'contributorlname'.$i);
 						
 						$addcontributor = array();
 						if ($lname) {
@@ -213,46 +548,238 @@
 							$contributors[] = $addcontributor;
 						} 
 					}										
-					$articletitleinput = cleanvars($_POST['articletitleinput']);
-					$newspapertitleinput = cleanvars($_POST['newspapertitleinput']);
+					$articletitleinput = filter_input(INPUT_POST,'articletitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$newspapertitleinput = filter_input(INPUT_POST,'newspapertitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 					if ($medium=="print") {
-						$newspapercityinput = cleanvars($_POST['newspapercityinput']);
-						$datepublishedday = cleanvars($_POST['datepublishedday']);
-						$datepublishedmonth = cleanvars($_POST['datepublishedmonth']);
-						$datepublishedyear = cleanvars($_POST['datepublishedyear']);
-						$editioninput = cleanvars($_POST['editioninput']);
-						$sectioninput = cleanvars($_POST['sectioninput']);
-						$pagesstartinput = cleanvars($_POST['pagesstartinput']);
-						$pagesendinput = cleanvars($_POST['pagesendinput']);
-						$pagesnonconsecutiveinput = cleanvars($_POST['pagesnonconsecutiveinput']);
+						$newspapercityinput = filter_input(INPUT_POST,'newspapercityinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$datepublishedday = filter_input(INPUT_POST,'datepublishedday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$datepublishedmonth = filter_input(INPUT_POST,'datepublishedmonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$datepublishedyear = filter_input(INPUT_POST,'datepublishedyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$editioninput = filter_input(INPUT_POST,'editioninput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$sectioninput = filter_input(INPUT_POST,'sectioninput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$pagesstartinput = filter_input(INPUT_POST,'pagesstartinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$pagesendinput = filter_input(INPUT_POST,'pagesendinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$pagesnonconsecutiveinput = filter_input(INPUT_POST,'pagesnonconsecutiveinput',FILTER_VALIDATE_BOOLEAN) ?: NULL;
 						if ($pagesnonconsecutiveinput) {
-							$pagesnonconsecutivepagenumsinput = cleanvars($_POST['pagesnonconsecutivepagenumsinput']);
+							$pagesnonconsecutivepagenumsinput = filter_input(INPUT_POST,'pagesnonconsecutivepagenumsinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 						}
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($websitetitleinput)) {
+                                                    $websitetitleinput = NULL;
+                                                }
+                                                if (!isset($urlwebsiteinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
+                                                if (!isset($electronicpublishday)) {
+                                                    $electronicpublishday = NULL;
+                                                }
+                                                if (!isset($electronicpublishmonth)) {
+                                                    $electronicpublishmonth = NULL;
+                                                }
+                                                if (!isset($electronicpublishyear)) {
+                                                    $electronicpublishyear = NULL;
+                                                }
+                                                if (!isset($webaccessdateday)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($webaccessdatemonth)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($webaccessdateyear)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
+                                                if (!isset($dbnewspapercityinput)) {
+                                                    $dbnewspapercityinput = NULL;
+                                                }
+                                                if (!isset($dbdatepublisheddateday)) {
+                                                    $dbdatepublisheddateday = NULL;
+                                                }
+                                                if (!isset($dbdatepublisheddatemonth)) {
+                                                    $dbdatepublisheddatemonth = NULL;
+                                                }
+                                                if (!isset($dbdatepublisheddateyear)) {
+                                                    $dbdatepublisheddateyear = NULL;
+                                                }
+                                                if (!isset($dbeditioninput)) {
+                                                    $dbeditioninput = NULL;
+                                                }
+                                                if (!isset($dbpagesstartinput)) {
+                                                    $dbpagesstartinput = NULL;
+                                                }
+                                                if (!isset($dbpagesendinput)) {
+                                                    $dbpagesendinput = NULL;
+                                                }
+                                                if (!isset($dbpagesnonconsecutiveinput)) {
+                                                    $dbpagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
 					}
 					if ($medium=="website") {
-						$websitetitleinput = cleanvars($_POST['websitetitleinput']);
-						$urlwebsiteinput = cleanvars($_POST['urlwebsiteinput']);
-						$electronicpublishday = cleanvars($_POST['electronicpublishday']);
-						$electronicpublishmonth = cleanvars($_POST['electronicpublishmonth']);
-						$electronicpublishyear = cleanvars($_POST['electronicpublishyear']);
-						$webaccessdateday = cleanvars($_POST['webaccessdateday']);
-						$webaccessdatemonth = cleanvars($_POST['webaccessdatemonth']);
-						$webaccessdateyear = cleanvars($_POST['webaccessdateyear']);
+						$websitetitleinput = filter_input(INPUT_POST,'websitetitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urlwebsiteinput = filter_input(INPUT_POST,'urlwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$electronicpublishday = filter_input(INPUT_POST,'electronicpublishday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$electronicpublishmonth = filter_input(INPUT_POST,'electronicpublishmonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$electronicpublishyear = filter_input(INPUT_POST,'electronicpublishyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateday = filter_input(INPUT_POST,'webaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdatemonth = filter_input(INPUT_POST,'webaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateyear = filter_input(INPUT_POST,'webaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($newspapercityinput)) {
+                                                    $newspapercityinput = NULL;
+                                                }
+                                                if (!isset($datepublishedday)) {
+                                                    $datepublishedday = NULL;
+                                                }
+                                                if (!isset($datepublishedmonth)) {
+                                                    $datepublishedmonth = NULL;
+                                                }
+                                                if (!isset($datepublishedyear)) {
+                                                    $datepublishedyear = NULL;
+                                                }
+                                                if (!isset($editioninput)) {
+                                                    $editioninput = NULL;
+                                                }
+                                                if (!isset($sectioninput)) {
+                                                    $sectioninput = NULL;
+                                                }
+                                                if (!isset($pagesstartinput)) {
+                                                    $pagesstartinput = NULL;
+                                                }
+                                                if (!isset($pagesendinput)) {
+                                                    $pagesendinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($dbnewspapercityinput)) {
+                                                    $dbnewspapercityinput = NULL;
+                                                }
+                                                if (!isset($dbdatepublisheddateday)) {
+                                                    $dbdatepublisheddateday = NULL;
+                                                }
+                                                if (!isset($dbdatepublisheddatemonth)) {
+                                                    $dbdatepublisheddatemonth = NULL;
+                                                }
+                                                if (!isset($dbdatepublisheddateyear)) {
+                                                    $dbdatepublisheddateyear = NULL;
+                                                }
+                                                if (!isset($dbeditioninput)) {
+                                                    $dbeditioninput = NULL;
+                                                }
+                                                if (!isset($dbpagesstartinput)) {
+                                                    $dbpagesstartinput = NULL;
+                                                }
+                                                if (!isset($dbpagesendinput)) {
+                                                    $dbpagesendinput = NULL;
+                                                }
+                                                if (!isset($dbpagesnonconsecutiveinput)) {
+                                                    $dbpagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
 					}
 					if ($medium=="db") {
-						$dbnewspapercityinput = cleanvars($_POST['dbnewspapercityinput']);
-						$dbdatepublisheddateday = cleanvars($_POST['dbdatepublisheddateday']);
-						$dbdatepublisheddatemonth = cleanvars($_POST['dbdatepublisheddatemonth']);
-						$dbdatepublisheddateyear = cleanvars($_POST['dbdatepublisheddateyear']);
-						$dbeditioninput = cleanvars($_POST['dbeditioninput']);
-						$dbpagesstartinput = cleanvars($_POST['dbpagesstartinput']);
-						$dbpagesendinput = cleanvars($_POST['dbpagesendinput']);
-						$dbpagesnonconsecutiveinput = cleanvars($_POST['dbpagesnonconsecutiveinput']);
-						$databaseinput = cleanvars($_POST['databaseinput']);
-						$dbaccessdateday = cleanvars($_POST['dbaccessdateday']);
-						$dbaccessdatemonth = cleanvars($_POST['dbaccessdatemonth']);
-						$dbaccessdateyear = cleanvars($_POST['dbaccessdateyear']);
-						$urldbinput = cleanvars($_POST['urldbinput']);
+						$dbnewspapercityinput = filter_input(INPUT_POST,'dbnewspapercityinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbdatepublisheddateday = filter_input(INPUT_POST,'dbdatepublisheddateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbdatepublisheddatemonth = filter_input(INPUT_POST,'dbdatepublisheddatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbdatepublisheddateyear = filter_input(INPUT_POST,'dbdatepublisheddateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbeditioninput = filter_input(INPUT_POST,'dbeditioninput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbpagesstartinput = filter_input(INPUT_POST,'dbpagesstartinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbpagesendinput = filter_input(INPUT_POST,'dbpagesendinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbpagesnonconsecutiveinput = filter_input(INPUT_POST,'dbpagesnonconsecutiveinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$databaseinput = filter_input(INPUT_POST,'databaseinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateday = filter_input(INPUT_POST,'dbaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdatemonth = filter_input(INPUT_POST,'dbaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateyear = filter_input(INPUT_POST,'dbaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urldbinput = filter_input(INPUT_POST,'urldbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($newspapercityinput)) {
+                                                    $newspapercityinput = NULL;
+                                                }
+                                                if (!isset($datepublishedday)) {
+                                                    $datepublishedday = NULL;
+                                                }
+                                                if (!isset($datepublishedmonth)) {
+                                                    $datepublishedmonth = NULL;
+                                                }
+                                                if (!isset($datepublishedyear)) {
+                                                    $datepublishedyear = NULL;
+                                                }
+                                                if (!isset($editioninput)) {
+                                                    $editioninput = NULL;
+                                                }
+                                                if (!isset($sectioninput)) {
+                                                    $sectioninput = NULL;
+                                                }
+                                                if (!isset($pagesstartinput)) {
+                                                    $pagesstartinput = NULL;
+                                                }
+                                                if (!isset($pagesendinput)) {
+                                                    $pagesendinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
+                                                if (!isset($websitetitleinput)) {
+                                                    $websitetitleinput = NULL;
+                                                }
+                                                if (!isset($urlwebsiteinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
+                                                if (!isset($electronicpublishday)) {
+                                                    $electronicpublishday = NULL;
+                                                }
+                                                if (!isset($electronicpublishmonth)) {
+                                                    $electronicpublishmonth = NULL;
+                                                }
+                                                if (!isset($electronicpublishyear)) {
+                                                    $electronicpublishyear = NULL;
+                                                }
+                                                if (!isset($webaccessdateday)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($webaccessdatemonth)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($webaccessdateyear)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
 					}
 					
 					//Execute the citation
@@ -267,12 +794,12 @@
 				case "scholar":
 					//Clean and load the variables from the form
 					$contributors = array();
-					$addidvalue = cleanvars($_POST['addidvalue']);
+					$addidvalue = filter_input(INPUT_POST,'addidvalue');
 					for ($i = 0; $i < $addidvalue; $i++) {
-						$cselect = cleanvars($_POST['contributorselect'.$i]);
-						$fname = cleanvars($_POST['contributorfname'.$i]);
-						$mi = cleanvars($_POST['contributormi'.$i]);
-						$lname = cleanvars($_POST['contributorlname'.$i]);
+						$cselect = filter_input(INPUT_POST,'contributorselect'.$i);
+						$fname = filter_input(INPUT_POST,'contributorfname'.$i);
+						$mi = filter_input(INPUT_POST,'contributormi'.$i);
+						$lname = filter_input(INPUT_POST,'contributorlname'.$i);
 						
 						$addcontributor = array();
 						if ($lname) {
@@ -283,31 +810,80 @@
 							$contributors[] = $addcontributor;
 						} 
 					}
-					$yearpublishedinput = cleanvars($_POST['yearpublishedinput']);
-					$articletitleinput = cleanvars($_POST['articletitleinput']);
-					$journaltitleinput = cleanvars($_POST['journaltitleinput']);
-					$volume = cleanvars($_POST['advancedinfovolume']);
-					$issue = cleanvars($_POST['advancedinfoissue']);
-					$pagesstartinput = cleanvars($_POST['pagesstartinput']);
-					$pagesendinput = cleanvars($_POST['pagesendinput']);
-					$pagesnonconsecutiveinput = cleanvars($_POST['pagesnonconsecutiveinput']);
+					$yearpublishedinput = filter_input(INPUT_POST,'yearpublishedinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$articletitleinput = filter_input(INPUT_POST,'articletitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$journaltitleinput = filter_input(INPUT_POST,'journaltitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$volume = filter_input(INPUT_POST,'advancedinfovolume',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$issue = filter_input(INPUT_POST,'advancedinfoissue',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$pagesstartinput = filter_input(INPUT_POST,'pagesstartinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$pagesendinput = filter_input(INPUT_POST,'pagesendinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$pagesnonconsecutiveinput = filter_input(INPUT_POST,'pagesnonconsecutiveinput',FILTER_VALIDATE_BOOLEAN) ?: NULL;
 					if ($pagesnonconsecutiveinput) {
-						$pagesnonconsecutivepagenumsinput = cleanvars($_POST['pagesnonconsecutivepagenumsinput']);
+						$pagesnonconsecutivepagenumsinput = filter_input(INPUT_POST,'pagesnonconsecutivepagenumsinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 					}
 					if ($medium=="website") {
-						$urlwebsiteinput = cleanvars($_POST['urlwebsiteinput']);
-						$doiwebsiteinput = cleanvars($_POST['doiwebsiteinput']);
-						$webaccessdateday = cleanvars($_POST['webaccessdateday']);
-						$webaccessdatemonth = cleanvars($_POST['webaccessdatemonth']);
-						$webaccessdateyear = cleanvars($_POST['webaccessdateyear']);
+						$urlwebsiteinput = filter_input(INPUT_POST,'urlwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$doiwebsiteinput = filter_input(INPUT_POST,'doiwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateday = filter_input(INPUT_POST,'webaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdatemonth = filter_input(INPUT_POST,'webaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$webaccessdateyear = filter_input(INPUT_POST,'webaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($databaseinput)) {
+                                                    $databaseinput = NULL;
+                                                }
+                                                if (!isset($dbaccessdateday)) {
+                                                    $dbaccessdateday = NULL;
+                                                }
+                                                if (!isset($dbaccessdatemonth)) {
+                                                    $dbaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($dbaccessdateyear)) {
+                                                    $dbaccessdateyear = NULL;
+                                                }
+                                                if (!isset($urldbinput)) {
+                                                    $urldbinput = NULL;
+                                                }
+                                                if (!isset($doidbinput)) {
+                                                    $doidbinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
 					}
 					if ($medium=="db") {
-						$databaseinput = cleanvars($_POST['databaseinput']);
-						$dbaccessdateday = cleanvars($_POST['dbaccessdateday']);
-						$dbaccessdatemonth = cleanvars($_POST['dbaccessdatemonth']);
-						$dbaccessdateyear = cleanvars($_POST['dbaccessdateyear']);
-						$urldbinput = cleanvars($_POST['urldbinput']);
-						$doidbinput = cleanvars($_POST['doidbinput']);
+						$databaseinput = filter_input(INPUT_POST,'databaseinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateday = filter_input(INPUT_POST,'dbaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdatemonth = filter_input(INPUT_POST,'dbaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$dbaccessdateyear = filter_input(INPUT_POST,'dbaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$urldbinput = filter_input(INPUT_POST,'urldbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+						$doidbinput = filter_input(INPUT_POST,'doidbinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+                                                
+                                                //Defining unused variables as NULL values to prevent errors when passed to ne next function
+						if (!isset($urlwebsiteinput)) {
+                                                    $urlwebsiteinput = NULL;
+                                                }
+                                                if (!isset($doiwebsiteinput)) {
+                                                    $doiwebsiteinput = NULL;
+                                                }
+                                                if (!isset($webaccessdateday)) {
+                                                    $webaccessdateday = NULL;
+                                                }
+                                                if (!isset($webaccessdatemonth)) {
+                                                    $webaccessdatemonth = NULL;
+                                                }
+                                                if (!isset($webaccessdateyear)) {
+                                                    $webaccessdateyear = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutiveinput)) {
+                                                    $pagesnonconsecutiveinput = NULL;
+                                                }
+                                                if (!isset($pagesnonconsecutivepagenumsinput)) {
+                                                    $pagesnonconsecutivepagenumsinput = NULL;
+                                                }
 					}
 					
 					//Execute the citation
@@ -322,12 +898,12 @@
 				case "website":
 					//Clean and load the variables from the form
 					$contributors = array();
-					$addidvalue = cleanvars($_POST['addidvalue']);
+					$addidvalue = filter_input(INPUT_POST,'addidvalue');
 					for ($i = 0; $i < $addidvalue; $i++) {
-						$cselect = cleanvars($_POST['contributorselect'.$i]);
-						$fname = cleanvars($_POST['contributorfname'.$i]);
-						$mi = cleanvars($_POST['contributormi'.$i]);
-						$lname = cleanvars($_POST['contributorlname'.$i]);
+						$cselect = filter_input(INPUT_POST,'contributorselect'.$i);
+						$fname = filter_input(INPUT_POST,'contributorfname'.$i);
+						$mi = filter_input(INPUT_POST,'contributormi'.$i);
+						$lname = filter_input(INPUT_POST,'contributorlname'.$i);
 						
 						$addcontributor = array();
 						if ($lname) {
@@ -338,16 +914,16 @@
 							$contributors[] = $addcontributor;
 						} 
 					}
-					$articletitleinput = cleanvars($_POST['articletitleinput']);
-					$websitetitleinput = cleanvars($_POST['websitetitleinput']);
-					$publishersponsorinput = cleanvars($_POST['publishersponsorinput']);
-					$urlwebsiteinput = cleanvars($_POST['urlwebsiteinput']);
-					$electronicpublishday = cleanvars($_POST['electronicpublishday']);
-					$electronicpublishmonth = cleanvars($_POST['electronicpublishmonth']);
-					$electronicpublishyear = cleanvars($_POST['electronicpublishyear']);
-					$webaccessdateday = cleanvars($_POST['webaccessdateday']);
-					$webaccessdatemonth = cleanvars($_POST['webaccessdatemonth']);
-					$webaccessdateyear = cleanvars($_POST['webaccessdateyear']);
+					$articletitleinput = filter_input(INPUT_POST,'articletitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$websitetitleinput = filter_input(INPUT_POST,'websitetitleinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$publishersponsorinput = filter_input(INPUT_POST,'publishersponsorinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$urlwebsiteinput = filter_input(INPUT_POST,'urlwebsiteinput',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$electronicpublishday = filter_input(INPUT_POST,'electronicpublishday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$electronicpublishmonth = filter_input(INPUT_POST,'electronicpublishmonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$electronicpublishyear = filter_input(INPUT_POST,'electronicpublishyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$webaccessdateday = filter_input(INPUT_POST,'webaccessdateday',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$webaccessdatemonth = filter_input(INPUT_POST,'webaccessdatemonth',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
+					$webaccessdateyear = filter_input(INPUT_POST,'webaccessdateyear',FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES) ?: NULL;
 					
 					//Execute the citation
 					if ($style=="apa6") {
